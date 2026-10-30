@@ -65,26 +65,37 @@ def generate_insights(data):
         f"There are {int(data.duplicated().sum())} duplicate rows.",
         f"There are {int(data.isna().sum().sum())} missing cells."
     ]
+
     numeric = data.select_dtypes(include=np.number)
+
     for col in numeric.columns[:6]:
         if numeric[col].notna().any():
             insights.append(
-                f"{col}: mean {numeric[col].mean():.2f}; median {numeric[col].median():.2f}."
+                f"{col}: mean {numeric[col].mean():.2f}; "
+                f"median {numeric[col].median():.2f}."
             )
+
     if numeric.shape[1] >= 2:
         corr = numeric.corr()
-       abs_corr = corr.abs().copy()
-      for col in abs_corr.columns:
-      abs_corr.loc[col, col] = 0
+        abs_corr = corr.abs().copy()
 
-stacked = abs_corr.stack()
+        # Ignore each column's correlation with itself
+        for col in abs_corr.columns:
+            abs_corr.loc[col, col] = 0
+
+        stacked = abs_corr.stack()
+
         if not stacked.empty and stacked.notna().any():
             pair = stacked.idxmax()
             value = corr.loc[pair[0], pair[1]]
+
             insights.append(
-                f"Strongest absolute numerical correlation found: {pair[0]} and {pair[1]} "
-                f"(correlation {value:.2f}). Correlation does not prove causation."
+                f"Strongest absolute numerical correlation found: "
+                f"{pair[0]} and {pair[1]} "
+                f"(correlation {value:.2f}). "
+                "Correlation does not prove causation."
             )
+
     return insights
 
 overview_tab, quality_tab, cleaning_tab, stats_tab, charts_tab, insights_tab, ml_tab = st.tabs([
