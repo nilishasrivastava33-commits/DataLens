@@ -1,7 +1,8 @@
 # DataLens — Automated Data Analysis & Insight Platform
 
 DataLens is a Python web app for exploring CSV datasets. It provides a dataset overview, a column-level data-quality report, basic data cleaning, descriptive statistics, visualizations, rule-based insights, and a Random Forest regression demo.
-
+For the app:
+https://datalens-3sxrwwpw38cnrwe5nc4xiw.streamlit.app/
 ## Features
 - Upload a CSV file
 - Inspect rows, columns, data types, missing values, duplicates, and unique values
