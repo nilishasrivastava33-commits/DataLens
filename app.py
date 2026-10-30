@@ -73,9 +73,11 @@ def generate_insights(data):
             )
     if numeric.shape[1] >= 2:
         corr = numeric.corr()
-        abs_corr = corr.abs().copy()
-        np.fill_diagonal(abs_corr.values, 0)
-        stacked = abs_corr.stack()
+       abs_corr = corr.abs().copy()
+      for col in abs_corr.columns:
+      abs_corr.loc[col, col] = 0
+
+stacked = abs_corr.stack()
         if not stacked.empty and stacked.notna().any():
             pair = stacked.idxmax()
             value = corr.loc[pair[0], pair[1]]
